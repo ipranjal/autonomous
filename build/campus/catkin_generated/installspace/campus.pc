@@ -1,0 +1,8 @@
+prefix=/Users/pranjal/Desktop/autonomus-ai/install
+
+Name: campus
+Description: Description of campus
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

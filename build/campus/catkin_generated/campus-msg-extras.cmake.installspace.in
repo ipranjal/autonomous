@@ -1,0 +1,2 @@
+set(campus_MESSAGE_FILES "")
+set(campus_SERVICE_FILES "srv/NavigationRequest.srv")

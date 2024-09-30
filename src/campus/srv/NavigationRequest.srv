@@ -1,0 +1,7 @@
+# Request part
+string visitor_name
+string host_name
+string building
+---
+# Response part
+string navigation_path

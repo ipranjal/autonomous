@@ -1,0 +1,11 @@
+<launch>
+    <node pkg="campus" type="map.py" name="campus_map" output="screen"/>
+    <node pkg="campus" type="ci_agent.py" name="ci_agent" output="screen"/>
+    <node pkg="campus" type="bi_agent.py" name="bi_agent_1" output="screen">
+        <param name="building" value="building_1" />
+    </node>
+    <node pkg="campus" type="bi_agent.py" name="bi_agent_2" output="screen">
+        <param name="building" value="building_2" />
+    </node>
+    <node pkg="campus" type="visitor_agent.py" name="visitor_agent" output="screen"/>
+</launch>

@@ -1,0 +1,2 @@
+campus
+-DCATKIN_DEVEL_PREFIX=/Users/pranjal/Desktop/autonomus-ai/devel -DCMAKE_INSTALL_PREFIX=/Users/pranjal/Desktop/autonomus-ai/install -G Unix Makefiles
