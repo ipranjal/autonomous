@@ -158,6 +158,7 @@ multidict==6.1.0
 munkres==1.1.4
 mypy-extensions==1.0.0
 netifaces @ file:///Users/runner/miniforge3/conda-bld/netifaces_1695545554820/work
+networkx==3.3
 nodeenv==1.9.1
 nose @ file:///home/conda/feedstock_root/build_artifacts/nose_1602434998960/work
 numpy @ file:///Users/runner/miniforge3/conda-bld/numpy_1707225640867/work/dist/numpy-1.26.4-cp311-cp311-macosx_11_0_arm64.whl#sha256=b62b8b824024855c3eb209bd45bfcf60bc9a11b94cbf9d5b7b25dc503021e672
@@ -186,11 +187,13 @@ packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_17181894
 pandas==2.2.2
 parameterized==0.9.0
 paramiko @ file:///home/conda/feedstock_root/build_artifacts/paramiko_1723463452187/work
+peewee==3.17.6
 pillow @ file:///Users/runner/miniforge3/conda-bld/pillow_1726075093669/work
 pluggy @ file:///home/conda/feedstock_root/build_artifacts/pluggy_1713667077545/work
 ply @ file:///home/conda/feedstock_root/build_artifacts/ply_1712242996588/work
 portalocker==2.10.1
 posthog==3.6.5
+prettytable==3.11.0
 proto-plus==1.24.0
 protobuf==4.25.4
 psutil @ file:///Users/runner/miniforge3/conda-bld/psutil_1725737862086/work
@@ -345,6 +348,7 @@ urllib3==2.2.3
 uvicorn==0.30.6
 uvloop==0.20.0
 watchfiles==0.24.0
+wcwidth==0.2.13
 websocket-client==1.8.0
 websockets==13.0.1
 wrapt==1.16.0

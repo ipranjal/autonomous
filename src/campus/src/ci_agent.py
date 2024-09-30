@@ -90,54 +90,65 @@ class CIAgent:
         my_crew = Crew(agents=[self.ci_agent], tasks=[task_navigate, task_request_bi])
         my_crew.kickoff(inputs={"visitor": visitor, "host": host,"building": building})
 
+        rospy.sleep(4)
+
+        task_navigate_back = Task(
+            description="Taking {visitor} back to campus gate from {building}",
+            expected_output="Visitor reached back campus gate.",
+            agent=self.ci_agent,
+            inputs={"visitor": visitor, "building": building},
+        )
+        my_back_crew = Crew(agents=[self.ci_agent], tasks=[task_navigate_back])
+        my_back_crew.kickoff(inputs={"visitor": visitor,"building": building})
+
+
+
     @tool("Generate path from map")
     def generate_path_from_map(visitor:str,host:str, building:str)->str:
-        """Guide visitor for meeting hist to building by generating path from map."""
+        """Guide visitor for meeting host to building by generating path from map."""
+        pub_event = rospy.Publisher('/ci_agent/event', String, queue_size=10)
+        try:
+            path_to_building = find_shortest_path("campus_gate", building)
+            ci_position_pub = rospy.Publisher(
+                "/ci_agent_position", PoseStamped, queue_size=10
+            )
+          
+            for waypoint in path_to_building:
+                rospy.loginfo(f"Waypoint: {waypoint}")
+                try:
+                    # Assuming each waypoint is a tuple (x, y)
+                    x, y = waypoint
+                    # Update the position of the CI agent
+                    pose_pub = ci_position_pub
+                    pose_msg = PoseStamped()
+                    pose_msg.header.stamp = rospy.Time.now()
+                    pose_msg.header.frame_id = "map"  # Set the frame ID (e.g., map, odom)
+                    pose_msg.pose.position.x = x
+                    pose_msg.pose.position.y = y
+                    pose_msg.pose.position.z = 0.0
+                    pose_msg.pose.orientation.w = 0.0
+                    pose_pub.publish(pose_msg)
 
-        path_to_building = find_shortest_path("campus_gate", building)
-        ci_position_pub = rospy.Publisher(
-            "/ci_agent_position", PoseStamped, queue_size=10
-        )
-        # visitor_position_pub = rospy.Publisher(
-        #     "/visitor_position", PoseStamped, queue_size=10
-        # )
-        for waypoint in path_to_building:
-            rospy.loginfo(f"Waypoint: {waypoint}")
-            try:
-                # Assuming each waypoint is a tuple (x, y)
-                x, y = waypoint
-                # Update the position of the CI agent
-                pose_pub = ci_position_pub
-                pose_msg = PoseStamped()
-                pose_msg.header.stamp = rospy.Time.now()
-                pose_msg.header.frame_id = "map"  # Set the frame ID (e.g., map, odom)
-                pose_msg.pose.position.x = x
-                pose_msg.pose.position.y = y
-                pose_msg.pose.position.z = 0.0
-                pose_msg.pose.orientation.w = 0.0
-                pose_pub.publish(pose_msg)
+                 
 
-                # pose_pub = visitor_position_pub
-                # pose_msg = PoseStamped()
-                # pose_msg.header.stamp = rospy.Time.now()
-                # pose_msg.header.frame_id = "map"  # Set the frame ID (e.g., map, odom)
-                # pose_msg.pose.position.x = x
-                # pose_msg.pose.position.y = y
-                # pose_msg.pose.position.z = 0.0
-                # pose_msg.pose.orientation.w = 1.0
-                # pose_pub.publish(pose_msg)
-
-                rospy.loginfo(f"CI Agent updated position to ({x}, {y})")
-            except ValueError as e:
-                rospy.logerr(f"Error unpacking waypoint {waypoint}: {e}")
-            rospy.sleep(2)
-
-        return "Visitor reached the building."
+                    rospy.loginfo(f"CI Agent updated position to ({x}, {y})")
+                except ValueError as e:
+                    rospy.logerr(f"Error unpacking waypoint {waypoint}: {e}")
+                rospy.sleep(2)
+            pass_event = "ci_navigation_pass"
+            pub_event.publish(pass_event)
+            return "Visitor reached the building."
+        except Exception as e:
+            rospy.logerr(f"Failed to generate path from map: {e}")
+            fail_event = "ci_navigation_fail"
+            pub_event.publish(fail_event)
+            return "Failed to generate path from map."
 
     @tool("Request floor navigation from BI agent")
     def request_bi_navigation_details(visitor:str,host:str, building:str)->str:
         """Request floor navigation details from BI agent."""
         rospy.wait_for_service('navigation_service')
+        pub_event = rospy.Publisher('/ci_agent/event', String, queue_size=10)
         try:
             # Create a service proxy to request navigation
             navigation_service = rospy.ServiceProxy('navigation_service', NavigationRequest)
@@ -146,10 +157,14 @@ class CIAgent:
             # Make the request
             response = navigation_service(visitor, host, building)
             rospy.loginfo(f"CI Agent received navigation path: {response.navigation_path}")
+            pass_event = "ci_com_pass"
+            pub_event.publish(pass_event)
             return response.navigation_path
     
-        except rospy.ServiceException as e:
+        except Exception as e:
             rospy.logerr(f"Service call failed: {e}")
+            fail_event = "ci_com_fail"
+            pub_event.publish(fail_event)
             return None
 
 

@@ -1,11 +1,36 @@
 <launch>
     <node pkg="campus" type="map.py" name="campus_map" output="screen"/>
     <node pkg="campus" type="ci_agent.py" name="ci_agent" output="screen"/>
+    <node pkg="campus" type="service_dispatcher.py" name="service_request_dispatcher" output="screen"/>
+    <node pkg="campus" type="institution.py" name="intitution" output="screen"/>
+
     <node pkg="campus" type="bi_agent.py" name="bi_agent_1" output="screen">
         <param name="building" value="building_1" />
     </node>
+    
     <node pkg="campus" type="bi_agent.py" name="bi_agent_2" output="screen">
         <param name="building" value="building_2" />
     </node>
+
+    <node pkg="campus" type="bi_agent.py" name="bi_agent_3" output="screen">
+        <param name="building" value="building_3" />
+    </node>
+
+    <node pkg="campus" type="bi_agent.py" name="bi_agent_4" output="screen">
+        <param name="building" value="building_4" />
+    </node>   
+
+    <node pkg="campus" type="bi_agent.py" name="bi_agent_5" output="screen">
+        <param name="building" value="building_5" />
+    </node>   
+        
+    <node pkg="campus" type="bi_agent.py" name="bi_agent_6" output="screen">
+        <param name="building" value="building_6" />
+    </node>   
+        
+    <node pkg="campus" type="bi_agent.py" name="bi_agent_7" output="screen">
+        <param name="building" value="building_7" />
+    </node>   
+
     <node pkg="campus" type="visitor_agent.py" name="visitor_agent" output="screen"/>
 </launch>

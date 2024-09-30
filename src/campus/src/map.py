@@ -69,7 +69,6 @@ def create_building_maps():
 
 
 
-print("Creating campus map and building maps...") 
 campus_map = create_campus_map()
 building_map = create_building_maps()
 node_positions = {'building_1': (1.4648120118962753, 4.04156868739152), 'building_2': (1.8590013657999913, 1.6370616102292708), 'building_4': (6.726970062486378, 0.6775142244600305), 'building_3': (4.2652814229718015, 7.908774779817612), 'campus_gate': (0.6735613582113436, 3.499858299454438), 'building_5': (5.479361952381201, 2.103696429130733), 'building_6': (6.3212561570455845, 7.118723482188811), 'building_7': (3.362852783422399, 4)}
